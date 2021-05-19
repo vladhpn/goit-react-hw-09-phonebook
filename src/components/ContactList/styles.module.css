@@ -1,0 +1,53 @@
+.list {
+  list-style: none;
+}
+
+.item {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-pack: distribute;
+      justify-content: space-around;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  line-height: 40px;
+  font-family: 'Roboto', sans-serif;
+}
+
+.contact_name {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.button {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  padding: 15px 40px;
+  margin-top: 20px;
+  font-size: 14px;
+  font-weight: 700;
+  border: solid #afb1b8;
+  border-radius: 4px;
+  color: #000;
+  background: #afb1b8;
+}
+
+.button:hover {
+  border: solid #2196f3;
+  background: #2196f3;
+  color: #fff;
+}
+
+.button_text {
+  margin-right: 5px;
+}
+/*# sourceMappingURL=styles.module.css.map */

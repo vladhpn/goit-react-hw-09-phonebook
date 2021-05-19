@@ -1,0 +1,38 @@
+.list {
+  list-style: none;
+}
+.item {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  line-height: 40px;
+  font-family: 'Roboto', sans-serif;
+}
+
+.contact_name {
+  display: flex;
+  align-items: center;
+}
+
+.button {
+  display: flex;
+  align-items: center;
+  padding: 15px 40px;
+  margin-top: 20px;
+  font-size: 14px;
+  font-weight: 700;
+
+  border: solid #afb1b8;
+  border-radius: 4px;
+  color: #000;
+  background: #afb1b8;
+  &:hover {
+    border: solid #2196f3;
+    background: #2196f3;
+    color: #fff;
+  }
+}
+
+.button_text {
+  margin-right: 5px;
+}
