@@ -1,16 +1,19 @@
-import { Component } from 'react';
-
-import { connect } from 'react-redux';
+import { useEffect } from 'react';
+import { useDispatch} from 'react-redux';
 import ContactList from '../../components/ContactList'
 import Form from '../../components/Form';
 import Filter from '../../components/Filter'
 import { operations, } from '../../redux/contacts';
 
-class Contacts extends Component {
-    componentDidMount() {
-        this.props.fetchContacts();
-      }
-      render() {
+
+export default function Contacts () {
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(operations.fetchContacts())
+  }, [dispatch])
+  
         return ( 
             <>    
             <Form />
@@ -19,9 +22,3 @@ class Contacts extends Component {
              </>
         );
       }
-    }
-  
-    const mapDispatchToProps = dispacth => ({
-      fetchContacts: () => dispacth(operations.fetchContacts()),
-    });
-    export default connect(null, mapDispatchToProps)(Contacts);

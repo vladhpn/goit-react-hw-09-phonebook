@@ -12,7 +12,7 @@ const fetchContacts = () => dispatch => {
     .catch(error => dispatch(actions.fetchContactsError(error.message)));
 };
 
-const addContact = ({ name, number }) => dispatch => {
+const addContact = (name, number) => dispatch => {
   const contacts = { name, number };
 
   dispatch(actions.addContactRequest());

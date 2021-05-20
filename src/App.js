@@ -3,7 +3,6 @@ import { useDispatch } from 'react-redux';
 import { Route, Switch } from 'react-router-dom';
 import AppBar from './components/AppBar';
 import { ToastContainer } from 'react-toastify';
-// import { selectors } from './redux/contacts';
 import { authOperations } from './redux/auth';
 import PrivateRoute from './components/PrivateRoute';
 import PublicRoute from './components/PublicRoute';

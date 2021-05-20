@@ -1,62 +1,69 @@
-import { Component } from "react";
-import { connect } from 'react-redux';
-import { operations } from '../../redux/contacts';
+import { useState } from "react";
+import { useSelector, useDispatch } from 'react-redux';
+import { operations, selectors } from '../../redux/contacts';
 import { toast } from 'react-toastify';
 import styles from '../Form/styles.module.scss';
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
 
+export default function Form (){
+  const dispatch = useDispatch();
+  const [name, setName] = useState('');
+  const [number, setNumber] = useState('');
 
-class Form extends Component{
+  const contacts = useSelector(selectors.getContacts)
 
-    state = {
-        name: '',
-        number: '',
-    }
+    const handleInputChange = (event) => {
+      const { name, value } = event.currentTarget;
 
-    handleInputChange = (event) => {
-        const { name, value } = event.currentTarget;
-        this.setState({
-          [name]: value,
-        });
+        switch (name) {
+            case 'name':
+                setName(value);
+                break;
+            case 'number':
+                setNumber(value);
+                break;
+            default: return;
+        };
       };
-   
+      
+     const reset = () => {
+      setName('');
+      setNumber('');
+  }
 
-      handleSubmit = (event) => {
+      const handleSubmit = (event) => {
         event.preventDefault();
 
-        const { name } = this.state;
-        const { contacts } = this.props;
         const findContact = contacts.find(
           (item) => item.name.toLowerCase() === name.toLowerCase()
         );
+        const findNumber = contacts.find((item) => item.number === number) 
         if (findContact) {
           toast.warning(`${name} is already in contacts`);
-          this.reset();
+          reset();
           return;
         }
-
-        this.props.onSubmit(this.state );
-        this.reset();
+        else if(findNumber){
+          toast.warning(`${number} is already in contacts`);
+          reset();
+          return;
+        }
+        dispatch(operations.addContact(name, number))
+   
+        reset();
       };
 
-      reset = () => {
-          this.setState({name : '', number : ''})
-      }
-
-   
-
-    render(){
         return(<>
         
             <h1 className={styles.title}>Phone book</h1>
-            <form onSubmit={this.handleSubmit} className={styles.form}>
+            <form onSubmit={handleSubmit} className={styles.form}>
               <label className={styles.label}>
                 <span className={styles.text}>Name</span>
                 <input className={styles.input}
                   type='text'
                   name='name'
-                  value={this.state.name}
-                  onChange={this.handleInputChange}
+                  value={name}
+                  onChange={handleInputChange}
                   pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
                   title="Имя может состоять только из букв, апострофа, тире и пробелов. Например Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan и т. п."
                   required
@@ -67,9 +74,9 @@ class Form extends Component{
                 <input className={styles.input}
                   type='tel'
                   name='number'
-                  value={this.state.number}
-                  onChange={this.handleInputChange}
-                  // pattern='(\+?( |-|\.)?\d{1,2}( |-|\.)?)?(\(?\d{3}\)?|\d{3})( |-|\.)?(\d{3}( |-|\.)?\d{4})'
+                  value={number}
+                  onChange={handleInputChange}
+                  pattern='(\+?( |-|\.)?\d{1,2}( |-|\.)?)?(\(?\d{3}\)?|\d{3})( |-|\.)?(\d{3}( |-|\.)?\d{4})'
                   title='Номер телефона должен состоять из 11-12 цифр и может содержать цифры, пробелы, тире, пузатые скобки и может начинаться с +'
                   required
                 />
@@ -79,14 +86,6 @@ class Form extends Component{
             
           </>)
     }
-}
 
-const mapStateToProps = ({ contacts: { contacts } }) => ({
-  contacts,
-});
 
-const mapDispatchToProps = dispatch => ({
-  onSubmit: (name,number) => dispatch(operations.addContact(name,number)),
-})
 
-export default connect(mapStateToProps, mapDispatchToProps)(Form);
