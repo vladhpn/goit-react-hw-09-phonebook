@@ -1,36 +1,49 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import React, { useState, useCallback } from 'react';
+import { useDispatch } from 'react-redux';
 import  { authOperations }  from '../../redux/auth';
 import styles from './styles.module.scss'
 
+export default function Register() {
+  const dispatch = useDispatch();
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
-class Register extends Component {
-  state = {
-    name: '',
-    email: '',
-    password: '',
-  };
+  const reset = () => {
+    setName('');
+    setEmail('');
+    setPassword('');
+  }
 
-  handleChange = ({ target: { name, value } }) => {
-    this.setState({ [name]: value });
-  };
+  const handleChange = useCallback(({ target: { name, value } }) => {
+    
+    switch (name){
+      case 'name':
+        setName(value);
+        break;
+      case 'email':
+        setEmail(value);
+        break;
+      case 'password':
+        setPassword(value);
+        break;
 
-  handleSubmit = e => {
+      default: return;
+    }
+  }, [])
+
+  const handleSubmit = useCallback((e) => {
     e.preventDefault();
 
-    this.props.onRegister(this.state);
-
-    this.setState({ name: '', email: '', password: '' });
-  };
-
-  render() {
-    const { name, email, password } = this.state;
+    dispatch(authOperations.register({name, email, password}))
+    reset();
+  },[dispatch, name, email, password]);
 
     return (
       <div>
         <h1 className={styles.title}>Register</h1>
         <form
-          onSubmit={this.handleSubmit}
+          onSubmit={handleSubmit}
           className={styles.form}
           autoComplete="off"
         >
@@ -41,7 +54,7 @@ class Register extends Component {
               name="name"
               placeholder="Username"
               value={name}
-              onChange={this.handleChange}
+              onChange={handleChange}
             />
           </label>
 
@@ -52,7 +65,7 @@ class Register extends Component {
               name="email"
               placeholder="Email"
               value={email}
-              onChange={this.handleChange}
+              onChange={handleChange}
             />
           </label>
 
@@ -64,7 +77,7 @@ class Register extends Component {
               name="password"
               placeholder="Password"
               value={password}
-              onChange={this.handleChange}
+              onChange={handleChange}
             />
           </label>
 
@@ -73,10 +86,6 @@ class Register extends Component {
       </div>
     );
   }
-}
 
-const mapDispatchToProps = {
-  onRegister: authOperations.register,
-};
 
-export default connect(null, mapDispatchToProps)(Register);
+

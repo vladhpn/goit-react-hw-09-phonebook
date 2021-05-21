@@ -1,7 +1,6 @@
 import React, {useCallback} from 'react';
 import { useSelector, useDispatch } from 'react-redux'
 import { operations, selectors } from '../../redux/contacts';
-import PropTypes from 'prop-types';
 import styles from './styles.module.scss'
 import DeleteIcon from '@material-ui/icons/Delete';
 import PersonIcon from '@material-ui/icons/Person';
@@ -11,7 +10,6 @@ const ContactList = () => {
     const dispatch = useDispatch();
     const contacts = useSelector(selectors.getVisibleContacts);
     const onDeleteContact = useCallback((id) => {dispatch(operations.deleteContact(id))},[dispatch]);
-
 
     return (
         <>
@@ -24,9 +22,4 @@ const ContactList = () => {
         </>);
     } 
 
-    // ContactList.propTypes = {
-    //  onDeleteContact: PropTypes.func.isRequired
-    // }
-
-  
 export default ContactList;

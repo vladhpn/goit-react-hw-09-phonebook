@@ -1,5 +1,4 @@
 import React, {useCallback} from 'react';
-import PropTypes from 'prop-types';
 import { useSelector, useDispatch} from 'react-redux';
 import { action, selectors } from '../../redux/contacts'
 import styles from './styles.module.scss'
@@ -16,10 +15,5 @@ const Filter = () => {
        <span className={styles.text}>Find contacts by name</span> 
           <input className={styles.input} type='text' value={value} onChange={onChange} />
       </label> </>)}
-
-      // Filter.propTypes = {
-      //   value: PropTypes.string,
-      //   onChange: PropTypes.func.isRequired
-      // }
 
 export default Filter;

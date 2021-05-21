@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { useSelector, useDispatch } from 'react-redux';
 import { operations, selectors } from '../../redux/contacts';
 import { toast } from 'react-toastify';
@@ -12,7 +12,7 @@ export default function Form (){
 
   const contacts = useSelector(selectors.getContacts)
 
-    const handleInputChange = (event) => {
+    const handleInputChange = useCallback((event) => {
       const { name, value } = event.currentTarget;
 
         switch (name) {
@@ -24,14 +24,14 @@ export default function Form (){
                 break;
             default: return;
         };
-      };
+      },[])
       
      const reset = () => {
       setName('');
       setNumber('');
   }
 
-      const handleSubmit = (event) => {
+      const handleSubmit = useCallback((event) => {
         event.preventDefault();
 
         const findContact = contacts.find(
@@ -51,7 +51,7 @@ export default function Form (){
         dispatch(operations.addContact(name, number))
    
         reset();
-      };
+      },[dispatch, contacts, name, number])
 
         return(<>
         

@@ -1,36 +1,40 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import React, { useState, useCallback } from 'react';
+import { useDispatch } from 'react-redux';
 import { authOperations } from '../../redux/auth';
 import styles from './styles.module.scss'
 
 
-class Login extends Component {
-  state = {
-    email: '',
-    password: '',
-  };
+export default function Login() {
+  const dispatch = useDispatch();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
-  handleChange = ({ target: { name, value } }) => {
-    this.setState({ [name]: value });
-  };
+const handleChange = useCallback(({ target: { name, value } }) => {
+  switch(name){
+    case 'email':
+      setEmail(value);
+      break;
+    case 'password':
+      setPassword(value);
+      break;
 
-  handleSubmit = e => {
+    default: return;
+  }
+}, [])
+
+  const handleSubmit = useCallback((e) => {
     e.preventDefault();
 
-    this.props.onLogin(this.state);
-
-    this.setState({ name: '', email: '', password: '' });
-  };
-
-  render() {
-    const { email, password } = this.state;
+    dispatch(authOperations.logIn({email, password}))
+    setEmail('');
+    setPassword('');
+  }, [dispatch, email, password])
 
     return (
       <div>
         <h1 className={styles.title}>Login</h1>
-
         <form
-          onSubmit={this.handleSubmit}
+          onSubmit={handleSubmit}
           className={styles.form}
           autoComplete="off"
         >
@@ -41,7 +45,7 @@ class Login extends Component {
               name="email"
               value={email}
               placeholder="Email"
-              onChange={this.handleChange}
+              onChange={handleChange}
             />
           </label>
 
@@ -52,7 +56,7 @@ class Login extends Component {
               name="password"
               value={password}
               placeholder="Password"
-              onChange={this.handleChange}
+              onChange={handleChange}
             />
           </label>
 
@@ -61,10 +65,7 @@ class Login extends Component {
       </div>
     );
   }
-}
 
-const mapDispatchToProps = {
-  onLogin: authOperations.logIn,
-};
 
-export default connect(null, mapDispatchToProps)(Login);
+
+
